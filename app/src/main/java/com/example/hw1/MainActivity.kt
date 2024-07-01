@@ -11,16 +11,24 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
 
     private lateinit var n: EditText
+    private lateinit var carsList: List<Car>
+    private lateinit var pairsList: List<Pair<Car, Car>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        n = findViewById(R.id.editTextText)
-        val numberOfCars = n.text.toString().toIntOrNull() ?: 0
-        val carsList = Car.createRandomCars(numberOfCars)
-        val pairsList = splitListIntoPairs(carsList)
-        determineWinner(pairsList)
+        val editText = findViewById<EditText>(R.id.editTextText)
+        val button = findViewById<Button>(R.id.button)
+        val winnerText = findViewById<TextView>(R.id.winnerText)
+
+        button.setOnClickListener {
+            val input = editText.text.toString()
+            val n = input.toInt()
+            carsList = Car.createRandomCars(n)
+            pairsList = splitListIntoPairs(carsList)
+            winnerText.text = determineWinner(pairsList)
+        }
     }
 
     override fun onDestroy() {
